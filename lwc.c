@@ -7,6 +7,9 @@ void lwc()
     int c = 0;
     int len = 0;
     int status = 0;
+    int ltotal = 0;
+    int wtotal = 0;
+    int ctotal = 0;
 
     if (cmd_cnt < 2)
     {
@@ -18,9 +21,10 @@ void lwc()
         for (int i = 1; i < cmd_cnt; i++)
         {
             FILE *fp = fopen(grd[i], "r");
-            if (fp == NULL)
+            if (!fp)
             {
-                printf("stu1459_mysh: file can't open");
+                perror(fp);
+                continue;
             }
 
             fseek(fp, 0, SEEK_END);
@@ -47,11 +51,13 @@ void lwc()
                     status = 0;
                 }
             }
+            ltotal += l;
+            wtotal += w;
+            ctotal += c;
 
             printf("l=%d w=%d c=%d %s\n", l, w, c, grd[i]);
-
-            free(buf);
             fclose(fp);
         }
+        printf("l=%d w=%d c=%d %s\n", ltotal, wtotal, ctotal, "total");
     }
 }
