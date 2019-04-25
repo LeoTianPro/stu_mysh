@@ -58,6 +58,7 @@ void lwc()
             printf("l=%d w=%d c=%d %s\n", l, w, c, grd[i]);
             fclose(fp);
         }
-        printf("l=%d w=%d c=%d %s\n", ltotal, wtotal, ctotal, "total");
+        if (cmd_cnt > 2)
+            printf("l=%d w=%d c=%d %s\n", ltotal, wtotal, ctotal, "total");
     }
 }
