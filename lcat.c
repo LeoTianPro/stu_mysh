@@ -29,13 +29,11 @@ void lcat()
 			if ((fd = open(grd[i], O_RDONLY)) == -1)
 			{
 				perror(grd[i]);
-				goto L1;
+				continue;
 			}
 			print_file(fd);
 		}
 	}
 
-L1:
-	if (fd != 0)
-		close(fd);
+	close(fd);
 }

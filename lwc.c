@@ -23,7 +23,7 @@ void lwc()
             FILE *fp = fopen(grd[i], "r");
             if (!fp)
             {
-                perror(fp);
+                perror(grd[i]);
                 continue;
             }
 
