@@ -1,0 +1,28 @@
+{
+    "files.associations": {
+        "stu1459_mysh.h": "c",
+        "main.h": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "types.h": "c",
+        "stat.h": "c",
+        "ctype.h": "c",
+        "stdlib.h": "c",
+        "unistd.h": "c",
+        "libgen.h": "c",
+        "memory.h": "c",
+        "iostream": "cpp",
+        "dirent.h": "c",
+        "pwd.h": "c",
+        "signal.h": "c",
+        "param.h": "c",
+        "wait.h": "c",
+        "fcntl.h": "c",
+        "pshpack8.h": "c",
+        "list.h": "c",
+        "time.h": "c",
+        "mylist.h": "c",
+        "crtdefs.h": "c",
+        "direct.h": "c"
+    }
+}
