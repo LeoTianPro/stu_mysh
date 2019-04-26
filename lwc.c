@@ -6,10 +6,12 @@ void lwc()
     int w = 0;
     int c = 0;
     int len = 0;
-    int status = 0;
+    int status = 0; //Check if the given character is a whitespace character
     int ltotal = 0;
     int wtotal = 0;
     int ctotal = 0;
+
+    struct stat st;
 
     if (cmd_cnt < 2)
     {
@@ -18,8 +20,15 @@ void lwc()
     }
     else
     {
+
         for (int i = 1; i < cmd_cnt; i++)
         {
+            stat(grd[i], &st);
+            if (S_ISDIR(st.st_mode))
+            {
+                perror(grd[i]);
+                continue;
+            }
             FILE *fp = fopen(grd[i], "r");
             if (!fp)
             {
@@ -27,11 +36,11 @@ void lwc()
                 continue;
             }
 
-            fseek(fp, 0, SEEK_END);
-            len = ftell(fp);
-            rewind(fp);
+            fseek(fp, 0, SEEK_END); //Point to EOF.
+            len = ftell(fp);        //Get the displacement of the current position relative to the beginning of the file, the displacement value is equal to the number of bytes in the file.
+            rewind(fp);             //equal to "fseek(fp, 0, SEEK_CUR);"
 
-            char *buf = (char *)malloc(len + 1);
+            char *buf = (char *)malloc(len + 1); //Dynamically allocate memory space based on file size
             fread(buf, len, 1, fp);
 
             for (int j = 0; buf[j]; j++)
