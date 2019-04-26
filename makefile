@@ -25,3 +25,4 @@ lwc.o:lwc.c
 
 clean:
 	rm -f *.o stu1459_mysh 
+

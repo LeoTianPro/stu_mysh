@@ -4,20 +4,32 @@ void show_dir(char *pathname)
 {
 	DIR *dir = NULL;
 	struct dirent *dp = NULL;
+	struct stat statbuf;
 	int cnt = 0;
 
-	if ((dir = opendir(pathname)) == NULL)
+	if (!(dir = opendir(pathname)))
 	{
 		perror(pathname);
 		return;
 	}
-	printf("\n%s:\n", pathname);
-	while ((dp = readdir(dir)) != NULL)
+
+	if (pathname != ".")
+		printf("\n%s:\n", pathname);
+	else
+		printf("\n");
+
+	while ((dp = readdir(dir)))
 	{
+		stat(dp->d_name, &statbuf);
 		if (strcmp(".", dp->d_name) == 0 ||
 			strcmp("..", dp->d_name) == 0)
 			continue;
-		printf("%-20s ", dp->d_name);
+
+		if (S_ISDIR(statbuf.st_mode))
+			printf("\e[34m%-20s\e[0m", dp->d_name); //If it is a directory, it shows blue.
+		else
+			printf("%-20s", dp->d_name);
+
 		cnt++;
 		if (cnt % 5 == 0)
 			printf("\n");
@@ -26,6 +38,7 @@ void show_dir(char *pathname)
 	if (dir != NULL)
 		closedir(dir);
 }
+
 void lls()
 {
 	char *pathname = ".";
@@ -41,7 +54,5 @@ void lls()
 		}
 	}
 	else
-	{
 		show_dir(pathname);
-	}
 }

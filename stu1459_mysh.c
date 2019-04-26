@@ -1,7 +1,24 @@
+/***************************************************************************
+*Project Name: stu159_mysh
+*Description: a simple simulation of Linux shell implemented by C
+*Major:	Network Engineering
+*Auther：Boren Li
+*Student ID：2220161459
+*Last Modified： 2019.04.26
+*Github repository:	https://github.com/Titanlbr520/stu_mysh
+***************************************************************************/
+
 #include "stu1459_mysh.h"
 
 int main()
 {
+	char *welcome = "\n\
+			\e[35mHi! This is a simple simulation of Linux shell!\e[0m\n\
+			\e[35mIf you really like my project, you can star it on https://github.com/Titanlbr520/stu_mysh .\e[0m\n\
+			\e[35mAnd I sincerely expect your suggestions.\e[0m \n\n\
+			\e[33mInput 'list' to show the command list.\e[0m\n\n";
+
+	printf("%s", welcome);
 
 	while (1)
 	{
@@ -12,7 +29,6 @@ int main()
 		get_command();
 
 		/** Execute the command based on your input. **/
-
 		if (match(grd[0], "clear") == 1)
 		{
 			lclear();
@@ -60,10 +76,6 @@ int main()
 
 		else if (match(grd[0], "about") == 1)
 		{
-			char *welcome = "\n\
-			This is a simple simulation of Linux shell!\n\
-			If you really like my project, you can star it on https://github.com/Titanlbr520/stu_mysh\n\
-			And I sincerely expect your suggestions. \n\n";
 			printf("%s", welcome);
 		}
 
@@ -116,11 +128,11 @@ void show_shell()
 
 	/* Get the user's passwd structure according to uid. */
 	user = getpwuid(uid);
-	printf("[%s@", user->pw_name); // Print username.
+	printf("\e[34m[%s@\e[0m", user->pw_name); // Print username.
 
 	/* Get the host name */
 	gethostname(hostname, 100);
-	printf("%s:", hostname); // Print host name.
+	printf("\e[34m%s\e[0m:", hostname); // Print host name.
 
 	/* Get the current working directory. */
 	getcwd(cwd, 120);
@@ -137,18 +149,18 @@ void show_shell()
 		}
 		else
 		{
-			printf("%s]", ret + 1);
+			printf("\e[34m%s]\e[0m", ret + 1);
 		}
 	}
 
 	/* Print user prompt. */
 	if (0 == uid)
 	{
-		printf("# "); // Root.
+		printf("\e[34m#\e[0m "); // Root.
 	}
 	else
 	{
-		printf("$ "); // General user.
+		printf("\e[34m$\e[0m "); // General user.
 	}
 
 	fflush(stdout); // Refresh the terminal prompt.

@@ -17,15 +17,15 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#define MAX_PATH_LEN 1000
-#define MAX_LINE 100
+#define MAX_PATH_LEN 1000 //Maximum path length
+#define MAX_LINE 100      //Maximum filename length
 
 char *grd[MAX_LINE]; // Save your input divided by spaces.
 int cmd_cnt;         // Save the subscript of grd[MAX_LINE].
 
-void show_shell();                       // Show terminal prompt.
-void get_command();                      // Get your input.
-void show_command_list();                // Show the command list.
+void show_shell();        // Show terminal prompt.
+void get_command();       // Get your input.
+void show_command_list(); // Show the command list.
 //char *get_comlist();                     // Get the command list.
 void show_command_doc();                 // Show the manul of command.
 void lclear();                           // Clear screen

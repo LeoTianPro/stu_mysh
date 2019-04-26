@@ -2,8 +2,8 @@
 
 void rm_dir(const char *pdir)
 {
-    DIR *dp;
-    struct dirent *entry;
+    DIR *dp = NULL;
+    struct dirent *entry = NULL;
     struct stat statbuf;
     if (!(dp = opendir(pdir)))
     {
