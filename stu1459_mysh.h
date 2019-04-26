@@ -1,3 +1,4 @@
+/* Necessary header files */
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,7 +24,8 @@
 char *grd[MAX_LINE]; // Save your input divided by spaces.
 int cmd_cnt;         // Save the subscript of grd[MAX_LINE].
 
-void show_shell();        // Show terminal prompt.
+void welcome();           // Show welcome message and a brief intrduction of stu1459_mysh
+void show_prompt();       // Show terminal prompt.
 void get_command();       // Get your input.
 void show_command_list(); // Show the command list.
 //char *get_comlist();                     // Get the command list.
@@ -33,8 +35,9 @@ void lls();                              // A simulation of "ls"(including hidde
 void lecho();                            // A simulation of "echo".
 void lpwd();                             // A simulation of "pwd".
 void lcd();                              // A simulation of "cd".
+void lmkdir();                           // A simulation of "mkdir".
 void lrm();                              // A simulation of "rm".
 void lcat();                             // A simulation of "cat".
 void lwc();                              // A simulation of "wc".
-void lmkdir();                           // A simulation of "mkdir".
+void ltime();                            // Show current time.
 int match(const char *str1, char *str2); // A simulation of "strcmp()".

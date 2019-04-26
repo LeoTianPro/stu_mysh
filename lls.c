@@ -27,8 +27,13 @@ void show_dir(char *pathname)
 
 		if (S_ISDIR(statbuf.st_mode))
 			printf("\e[34m%-20s\e[0m", dp->d_name); //If it is a directory, it shows blue.
-		else
-			printf("%-20s", dp->d_name);
+		else if (S_ISREG(statbuf.st_mode))
+		{
+			if (access(dp->d_name, X_OK))
+				printf("\e[32m%-20s\e[0m", dp->d_name);
+			else
+				printf("%-20s", dp->d_name);
+		}
 
 		cnt++;
 		if (cnt % 5 == 0)

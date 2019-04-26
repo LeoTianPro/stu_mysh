@@ -23,6 +23,8 @@
         "time.h": "c",
         "mylist.h": "c",
         "crtdefs.h": "c",
-        "direct.h": "c"
+        "direct.h": "c",
+        "*.tcc": "c",
+        "fstream": "c"
     }
 }
