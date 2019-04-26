@@ -2,24 +2,14 @@
 
 int main()
 {
-	/** Manual for each command **/
-	char *ls_doc = "\nls [FILE]... - list directory contents\n\n";
-	char *echo_doc = "\necho - display a line of text\n\n";
-	char *cat_doc = "\ncat [FILE]... - concatenate files and print on the standard output\n\n";
-	char *mkdir_doc = "\nmkdir DIRECTORY... - make directories\n\n";
-	char *rm_doc = "\nrm [-r/-R] [FILE]... - remove files or directories\n\n";
-	char *cd_doc = "\ncd - go to the given directory\n\n";
-	char *pwd_doc = "\npwd - print name of current/working directory\n\n";
-	char *wc_doc = "\nwc [FILE]... - print newline, word, and byte counts for each file\n\n";
-	char *exit_doc = "\nexit/quit - cause normal process termination\n\n";
 
 	while (1)
 	{
 		/** Display terminal prompt. **/
-		showShell();
+		show_shell();
 
 		/** Get input and transfer it to command. **/
-		getCommand();
+		get_command();
 
 		/** Execute the command based on your input. **/
 
@@ -70,34 +60,27 @@ int main()
 
 		else if (match(grd[0], "about") == 1)
 		{
-			printf("This is a simple simulation of bash in Linux!");
+			char *welcome = "\n\
+			This is a simple simulation of Linux shell!\n\
+			If you really like my project, you can star it on https://github.com/Titanlbr520/stu_mysh\n\
+			And I sincerely expect your suggestions. \n\n";
+			printf("%s", welcome);
 		}
 
 		else if (match(grd[0], "list") == 1)
 		{
-			printf("command list:ls\necho\ncat\nmkdir\nrm\ncd\npwd\nwc\nman\nlist");
+			show_command_list();
 		}
 
-		else if (match(grd[0], "man") == 1 && grd[1])
+		else if (match(grd[0], "man") == 1)
 		{
-			if (match(grd[1], "ls") == 1)
-				printf("%s", ls_doc);
-			else if (match(grd[1], "echo") == 1)
-				printf("%s", echo_doc);
-			else if (match(grd[1], "cat") == 1)
-				printf("%s", cat_doc);
-			else if (match(grd[1], "mkdir") == 1)
-				printf("%s", mkdir_doc);
-			else if (match(grd[1], "rm") == 1)
-				printf("%s", rm_doc);
-			else if (match(grd[1], "cd") == 1)
-				printf("%s", cd_doc);
-			else if (match(grd[1], "pwd") == 1)
-				printf("%s", pwd_doc);
-			else if (match(grd[1], "wc") == 1)
-				printf("%s", wc_doc);
-			else if (match(grd[1], "exit") == 1 || match(grd[1], "quit") == 1)
-				printf("%s", exit_doc);
+			if (grd[1])
+				show_command_doc(grd[1]);
+			else
+			{
+				printf("\nWhat manual page do you want?\n\n");
+				continue;
+			}
 		}
 
 		else if (NULL == grd[0])
@@ -118,15 +101,15 @@ int main()
 	return 1;
 }
 
-void showShell()
+void show_shell()
 {
 	/* The terminal prompt consists of: [username +@+hostname+current directory]+user prompt. */
 
 	uid_t uid;
-	char *ret;
-	struct passwd *user;
+	char *ret = NULL;
+	struct passwd *user = NULL;
 	char hostname[100];
-	char cwd[120];
+	char cwd[MAX_PATH_LEN];
 
 	/* Get user id. */
 	uid = getuid();
@@ -171,7 +154,7 @@ void showShell()
 	fflush(stdout); // Refresh the terminal prompt.
 }
 
-void getCommand()
+void get_command()
 {
 	cmd_cnt = 0;
 	char str[MAX_LINE]; // Save your original input.
@@ -189,6 +172,140 @@ void getCommand()
 		strcpy(grd[cmd_cnt++], next);
 		next = strtok(NULL, " ");
 	}
+}
+
+void show_command_list()
+{
+	char *commondlist[] = {"\nabout",
+						   "ls [FILE]...",
+						   "echo",
+						   "cat [FILE]...",
+						   "mkdir DIRECTORY...",
+						   "rm [-r/-R] [FILE]...",
+						   "cd",
+						   "pwd",
+						   "wc [FILE]...",
+						   "exit/quit",
+						   "man [command]",
+						   "clear",
+						   "list\n"};
+
+	for (int i = 0; i < sizeof(commondlist) / sizeof(commondlist[i]); i++)
+	{
+		printf("%s\n", commondlist[i]);
+	}
+}
+
+// char *get_comlist()
+// {
+// 	char *commondlist[] = {"ls",
+// 						   "echo",
+// 						   "cat",
+// 						   "mkdir",
+// 						   "rm",
+// 						   "cd",
+// 						   "pwd",
+// 						   "wc",
+// 						   "exit/quit",
+// 						   "man [command]",
+// 						   "clear",
+// 						   "list"};
+
+// 	return *commondlist;
+// }
+
+void show_command_doc()
+{
+
+	/** Manual for each command **/
+	char *ls_doc = "\nls [FILE]... - list directory contents\n\n";
+	char *echo_doc = "\necho - display a line of text\n\n";
+	char *cat_doc = "\ncat [FILE]... - concatenate files and print on the standard output\n\n";
+	char *mkdir_doc = "\nmkdir DIRECTORY... - make directories\n\n";
+	char *rm_doc = "\nrm [-r/-R] [FILE]... - remove files or directories\n\n";
+	char *cd_doc = "\ncd - go to the given directory\n\n";
+	char *pwd_doc = "\npwd - print name of current/working directory\n\n";
+	char *wc_doc = "\nwc [FILE]... - print newline, word, and byte counts for each file\n\n";
+	char *exit_doc = "\nexit/quit - cause normal process termination\n\n";
+	char *man_doc = "\nman [command] - show the manul of command\n\n";
+	char *clear_doc = "\nclear - clear the terminal screen\n\n";
+	char *list_doc = "\nlist - show the command list\n\n";
+
+	if (match(grd[1], "ls") == 1)
+	{
+		printf("%s", ls_doc);
+	}
+	else if (match(grd[1], "echo") == 1)
+	{
+		printf("%s", echo_doc);
+	}
+	else if (match(grd[1], "cat") == 1)
+	{
+		printf("%s", cat_doc);
+	}
+	else if (match(grd[1], "mkdir") == 1)
+	{
+		printf("%s", mkdir_doc);
+	}
+	else if (match(grd[1], "rm") == 1)
+	{
+		printf("%s", rm_doc);
+	}
+	else if (match(grd[1], "cd") == 1)
+	{
+		printf("%s", cd_doc);
+	}
+	else if (match(grd[1], "pwd") == 1)
+	{
+		printf("%s", pwd_doc);
+	}
+	else if (match(grd[1], "wc") == 1)
+	{
+		printf("%s", wc_doc);
+	}
+	else if (match(grd[1], "exit") == 1 || match(grd[1], "quit") == 1)
+	{
+		printf("%s", exit_doc);
+	}
+	else if (match(grd[1], "man") == 1)
+	{
+		printf("%s", man_doc);
+	}
+	else if (match(grd[1], "clear") == 1)
+	{
+		printf("%s", clear_doc);
+	}
+	else if (match(grd[1], "list") == 1)
+	{
+		printf("%s", list_doc);
+	}
+	else
+	{
+		printf("No manual entry for %s\n", grd[1]);
+	}
+
+	// char *commanddoc[] = {"ls [FILE]... - list directory contents",
+	// 					  "echo - display a line of text",
+	// 					  "cat [FILE]... - concatenate files and print on the standard output",
+	// 					  "mkdir DIRECTORY... - make directories",
+	// 					  "rm [-r/-R] [FILE]... - remove files or directories",
+	// 					  "cd - go to the given directory",
+	// 					  "pwd - print name of current/working directory",
+	// 					  "wc [FILE]... - print newline, word, and byte counts for each file",
+	// 					  "exit/quit - cause normal process termination",
+	// 					  "man - show the manul of command",
+	// 					  "clear - clear the terminal screen",
+	// 					  "list - show the command list"};
+
+	// char *commandlist[] = get_comlist();
+
+	// for (int i = 0; i < strlen(*commanddoc); i++)
+	// {
+	// 	if (match(command, commandlist[i]) == 1)
+	// 	{
+	// 		printf("\n%s\n\n", commanddoc[i]);
+	// 	}
+	// }
 }
 
 void lclear()

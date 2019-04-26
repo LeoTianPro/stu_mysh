@@ -11,7 +11,7 @@ void show_dir(char *pathname)
 		perror(pathname);
 		return;
 	}
-	printf("%s:\n", pathname);
+	printf("\n%s:\n", pathname);
 	while ((dp = readdir(dir)) != NULL)
 	{
 		if (strcmp(".", dp->d_name) == 0 ||
@@ -22,7 +22,7 @@ void show_dir(char *pathname)
 		if (cnt % 5 == 0)
 			printf("\n");
 	}
-	printf("\n");
+	printf("\n\n");
 	if (dir != NULL)
 		closedir(dir);
 }
