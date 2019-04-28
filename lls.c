@@ -4,7 +4,7 @@ void show_dir(char *pathname)
 {
 	DIR *dir = NULL;
 	struct dirent *dp = NULL;
-	struct stat statbuf;
+	struct stat st;
 	int cnt = 0;
 
 	if (!(dir = opendir(pathname)))
@@ -20,14 +20,14 @@ void show_dir(char *pathname)
 
 	while ((dp = readdir(dir)))
 	{
-		stat(dp->d_name, &statbuf);
+		stat(dp->d_name, &st);
 		if (strcmp(".", dp->d_name) == 0 ||
 			strcmp("..", dp->d_name) == 0)
 			continue;
 
-		if (S_ISDIR(statbuf.st_mode))
+		if (S_ISDIR(st.st_mode))
 			printf("\e[34m%-20s\e[0m", dp->d_name); //If it is a directory, it shows blue.
-		else if (S_ISREG(statbuf.st_mode))
+		else if (S_ISREG(st.st_mode))
 		{
 			if (access(dp->d_name, X_OK))
 				printf("\e[32m%-20s\e[0m", dp->d_name);

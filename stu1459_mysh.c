@@ -219,24 +219,6 @@ void show_command_list()
 	}
 }
 
-// char *get_comlist()
-// {
-// 	char *commondlist[] = {"ls",
-// 						   "echo",
-// 						   "cat",
-// 						   "mkdir",
-// 						   "rm",
-// 						   "cd",
-// 						   "pwd",
-// 						   "wc",
-// 						   "exit/quit",
-// 						   "man [command]",
-// 						   "clear",
-// 						   "list"};
-
-// 	return *commondlist;
-// }
-
 void show_command_doc()
 {
 
@@ -307,29 +289,6 @@ void show_command_doc()
 	{
 		printf("No manual entry for %s\n", grd[1]);
 	}
-
-	// char *commanddoc[] = {"ls [FILE]... - list directory contents",
-	// 					  "echo - display a line of text",
-	// 					  "cat [FILE]... - concatenate files and print on the standard output",
-	// 					  "mkdir DIRECTORY... - make directories",
-	// 					  "rm [-r/-R] [FILE]... - remove files or directories",
-	// 					  "cd - go to the given directory",
-	// 					  "pwd - print name of current/working directory",
-	// 					  "wc [FILE]... - print newline, word, and byte counts for each file",
-	// 					  "exit/quit - cause normal process termination",
-	// 					  "man - show the manul of command",
-	// 					  "clear - clear the terminal screen",
-	// 					  "list - show the command list"};
-
-	// char *commandlist[] = get_comlist();
-
-	// for (int i = 0; i < strlen(*commanddoc); i++)
-	// {
-	// 	if (match(command, commandlist[i]) == 1)
-	// 	{
-	// 		printf("\n%s\n\n", commanddoc[i]);
-	// 	}
-	// }
 }
 
 void lclear()

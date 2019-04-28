@@ -16,6 +16,7 @@ void print_file(int fd)
 void lcat()
 {
 	int fd;
+	struct stat st;
 
 	if (cmd_cnt < 2)
 	{
@@ -31,7 +32,14 @@ void lcat()
 				perror(grd[i]);
 				continue;
 			}
-			print_file(fd);
+			stat(grd[1], &st);
+			if (S_ISDIR(st.st_mode))
+			{
+				printf("cat: %s: Is a directory\n", grd[1]);
+				continue;
+			}
+			else
+				print_file(fd);
 		}
 	}
 

@@ -4,7 +4,7 @@ void rm_dir(const char *pdir)
 {
     DIR *dp = NULL;
     struct dirent *entry = NULL;
-    struct stat statbuf;
+    struct stat st;
     if (!(dp = opendir(pdir)))
     {
         perror(pdir);
@@ -13,8 +13,8 @@ void rm_dir(const char *pdir)
     chdir(pdir);
     while ((entry = readdir(dp)))
     {
-        stat(entry->d_name, &statbuf);
-        if (__S_IFDIR & statbuf.st_mode)
+        stat(entry->d_name, &st);
+        if (__S_IFDIR & st.st_mode)
         {
             if ((strcmp(".", entry->d_name) == 0) || (strcmp("..", entry->d_name) == 0))
             {
