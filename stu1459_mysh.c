@@ -17,13 +17,13 @@ int main()
 
 	while (1)
 	{
-		/** Display terminal prompt. **/
+		/** Display terminal prompt **/
 		show_prompt();
 
-		/** Get input and transfer it to command. **/
+		/** Get input and transfer it to command **/
 		get_command();
 
-		/** Execute the command based on your input. **/
+		/** Execute the command based on your input **/
 		if (match(grd[0], "clear") == 1)
 		{
 			lclear();
@@ -36,6 +36,14 @@ int main()
 
 		else if (match(grd[0], "echo") == 1)
 		{
+			for (int i = 1; i < cmd_cnt; i++)
+			{
+				if (strcmp(grd[i], ">") == 0 || strcmp(grd[i], ">>") == 0)
+				{
+					lecho_redirect();
+					return 1;
+				}
+			}
 			lecho();
 		}
 
@@ -107,6 +115,7 @@ int main()
 			printf("stu1459_mysh: command not found: %s\n", grd[0]);
 		}
 	}
+
 	return 1;
 }
 
@@ -123,7 +132,7 @@ void welcome()
 
 void show_prompt()
 {
-	/* The terminal prompt consists of: [username +@+hostname+current directory]+user prompt. */
+	/* The terminal prompt consists of: [username +@+hostname+current directory]+user prompt */
 
 	uid_t uid;
 	char *ret = NULL;
@@ -131,29 +140,29 @@ void show_prompt()
 	char hostname[100];
 	char cwd[MAX_PATH_LEN];
 
-	/* Get user id. */
+	/* Get user id */
 	uid = getuid();
 
-	/* Get the user's passwd structure according to uid. */
+	/* Get the user's passwd structure according to uid */
 	user = getpwuid(uid);
-	printf("\e[34m[%s@\e[0m", user->pw_name); // Print username.
+	printf("\e[34m[%s@\e[0m", user->pw_name); // Print username
 
 	/* Get the host name */
 	gethostname(hostname, 100);
-	printf("\e[34m%s\e[0m:", hostname); // Print host name.
+	printf("\e[34m%s\e[0m:", hostname); // Print host name
 
-	/* Get the current working directory. */
+	/* Get the current working directory */
 	getcwd(cwd, 120);
 	if (strcmp(cwd, user->pw_dir) == 0)
 	{
-		printf("~"); // Home directory special handling.
+		printf("~"); // Home directory special handling
 	}
 	else
 	{
-		ret = strrchr(cwd, '/'); // Get the last directory of the path.
+		ret = strrchr(cwd, '/'); // Get the last directory of the path
 		if (ret[1] == '\0')
 		{
-			printf("/]"); // Root directory.
+			printf("/]"); // Root directory
 		}
 		else
 		{
@@ -161,23 +170,23 @@ void show_prompt()
 		}
 	}
 
-	/* Print user prompt. */
+	/* Print user prompt */
 	if (0 == uid)
 	{
-		printf("\e[34m#\e[0m "); // Root.
+		printf("\e[34m#\e[0m "); // Root
 	}
 	else
 	{
-		printf("\e[34m$\e[0m "); // General user.
+		printf("\e[34m$\e[0m "); // General user
 	}
 
-	fflush(stdout); // Refresh the terminal prompt.
+	fflush(stdout); // Refresh the terminal prompt
 }
 
 void get_command()
 {
 	cmd_cnt = 0;
-	char str[MAX_LINE]; // Save your original input.
+	char str[MAX_LINE]; // Save your original input
 	char *next = NULL;
 	memset(grd, 0, MAX_LINE);
 	fgets(str, 80, stdin);
@@ -304,7 +313,7 @@ void ltime()
 	time_t tvar;
 	struct tm *tp = NULL;
 	time(&tvar);
-	tp = localtime(&tvar); //Get local time.
+	tp = localtime(&tvar); //Get local time
 	weekday = tp->tm_wday;
 	switch (weekday)
 	{
@@ -332,7 +341,7 @@ void ltime()
 	default:
 		break;
 	}
-	month = 1 + tp->tm_mon; //Must add 1 after reviewing the data: tm_mon is one less than the actual value.
+	month = 1 + tp->tm_mon; //Must add 1 after reviewing the data: tm_mon is one less than the actual value
 	switch (month)
 	{
 	case 1:
@@ -378,6 +387,87 @@ void ltime()
 	printf("%d:", tp->tm_hour);
 	printf("%d:", tp->tm_min);
 	printf("%d ", tp->tm_sec);
-	printf("CST ");						//CST, it means "China Standard Time".
-	printf("%d\n", 1900 + tp->tm_year); //Must be added 1900, the returned value is not a complete year, less than the actual value of 1900.
+	printf("CST ");						//CST, it means "China Standard Time"
+	printf("%d\n", 1900 + tp->tm_year); //Must be added 1900, the returned value is not a complete year, less than the actual value of 1900
+}
+
+void lecho_redirect()
+{
+	int fd;
+	pid_t pid;
+	char filename[MAX_LINE];
+	for (int i = 1; i < cmd_cnt; i++)
+	{
+		if (strcmp(grd[i], ">") == 0 || strcmp(grd[i], ">>") == 0)
+		{
+			if (grd[i + 1] == NULL) //If there is no path name after > and >>
+			{
+				printf("stu1459_mysh: syntax error\n");
+			}
+			else
+			{
+				strcpy(filename, grd[i + 1]);
+			}
+			if (strcmp(grd[i], ">") == 0)
+			{
+				fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0600); //Because you want to rewrite, you must use O_TRUNC
+				if (fd < 0)
+				{
+					perror("stu1459_mysh: open");
+					return;
+				}
+				if ((pid = fork()) == 0)
+				{
+					dup2(fd, 1); //Redirect stdout to fd
+					for (int j = 1; j < i; j++)
+					{
+						printf("%s ", grd[j]); //The printed content actually went to the file (because it has been redirected)
+					}
+					//return;
+					continue;
+				}
+				else if (pid > 0)
+				{
+					waitpid(pid, NULL, 0);
+				}
+				else
+				{
+					perror("stu1459_mysh: fork");
+					return;
+				}
+				close(fd);
+			}
+			else
+			{															  //If it is >>, implement an append redirect
+				fd = open(filename, O_CREAT | O_APPEND | O_WRONLY, 0600); //In this case, you must use O_APPEND
+				if (fd < 0)
+				{
+					perror("stu1459_mysh: open");
+					return;
+				}
+				if ((pid = fork()) == 0)
+				{
+					dup2(fd, 1);
+					for (int j = 1; j < i; j++)
+					{
+						printf("%s ", grd[j]);
+					}
+					//return;
+					continue;
+				}
+				else if (pid > 0)
+				{
+					waitpid(pid, NULL, 0);
+				}
+				else
+				{
+					perror("stu1459_mysh: fork");
+					return;
+				}
+				close(fd);
+			}
+		}
+	}
+
+	return;
 }
