@@ -4,7 +4,7 @@
 *Major:	Network Engineering
 *Auther：Boren Li
 *Student ID：2220161459
-*Last Modified： 2019.04.26
+*Last Modified： 2019.04.29
 *Github repository:	https://github.com/Titanlbr520/stu_mysh
 ***************************************************************************/
 
@@ -12,10 +12,12 @@
 
 int main()
 {
+	int go_on = 1;
+
 	welcome();
 	sleep(1);
 
-	while (1)
+	while (go_on)
 	{
 		/** Display terminal prompt **/
 		show_prompt();
@@ -24,99 +26,13 @@ int main()
 		get_command();
 
 		/** Execute the command based on your input **/
-		if (match(grd[0], "clear") == 1)
-		{
-			lclear();
-		}
-
-		else if (match(grd[0], "ls") == 1)
-		{
-			lls();
-		}
-
-		else if (match(grd[0], "echo") == 1)
-		{
-			for (int i = 1; i < cmd_cnt; i++)
-			{
-				if (strcmp(grd[i], ">") == 0 || strcmp(grd[i], ">>") == 0)
-				{
-					lecho_redirect();
-					return 1;
-				}
-			}
-			lecho();
-		}
-
-		else if (match(grd[0], "cat") == 1)
-		{
-			lcat();
-		}
-
-		else if (match(grd[0], "mkdir") == 1)
-		{
-			lmkdir();
-		}
-
-		else if (match(grd[0], "rm") == 1)
-		{
-			lrm();
-		}
-
-		else if (match(grd[0], "cd") == 1)
-		{
-			lcd();
-		}
-
-		else if (match(grd[0], "pwd") == 1)
-		{
-			lpwd();
-		}
-
-		else if (match(grd[0], "wc") == 1)
-		{
-			lwc();
-		}
-
-		else if (match(grd[0], "time") == 1)
-		{
-			ltime();
-		}
-
-		else if (match(grd[0], "about") == 1)
-		{
-			welcome();
-		}
-
-		else if (match(grd[0], "man") == 1)
-		{
-			if (grd[1])
-				show_command_doc(grd[1]);
-			else
-			{
-				show_command_list();
-			}
-		}
-
-		else if (NULL == grd[0])
+		if (is_command())
 		{
 			continue;
 		}
-
-		else if (match(grd[0], "exit") == 1 || match(grd[0], "quit") == 1)
-		{
-			printf("\n\
-			\e[35mThanks for your use, good bye~\e[0m\n\n");
-			sleep(1);
-			exit(0);
-		}
-
-		else
-		{
-			printf("stu1459_mysh: command not found: %s\n", grd[0]);
-		}
 	}
 
-	return 1;
+	return 0;
 }
 
 void welcome()
@@ -203,6 +119,100 @@ void get_command()
 	}
 }
 
+int is_command()
+{
+	if (NULL == grd[0]) //If there is no command (just enter)
+	{
+		return 0;
+	}
+	else if (strcmp(grd[0], "clear") == 0)
+	{
+		lclear();
+	}
+
+	else if (strcmp(grd[0], "ls") == 0)
+	{
+		lls();
+	}
+
+	else if (strcmp(grd[0], "echo") == 0)
+	{
+		for (int i = 1; i < cmd_cnt; i++)
+		{
+			if (strcmp(grd[i], ">") == 0 || strcmp(grd[i], ">>") == 0)
+			{
+				lecho_redirect();
+				return 1;
+			}
+		}
+		lecho();
+		return 1;
+	}
+
+	else if (strcmp(grd[0], "cat") == 0)
+	{
+		lcat();
+	}
+
+	else if (strcmp(grd[0], "mkdir") == 0)
+	{
+		lmkdir();
+	}
+
+	else if (strcmp(grd[0], "rm") == 0)
+	{
+		lrm();
+	}
+
+	else if (strcmp(grd[0], "cd") == 0)
+	{
+		lcd();
+	}
+
+	else if (strcmp(grd[0], "pwd") == 0)
+	{
+		lpwd();
+	}
+
+	else if (strcmp(grd[0], "wc") == 0)
+	{
+		lwc();
+	}
+
+	else if (strcmp(grd[0], "time") == 0)
+	{
+		ltime();
+	}
+
+	else if (strcmp(grd[0], "sh") == 0)
+	{
+		welcome();
+	}
+
+	else if (strcmp(grd[0], "man") == 0)
+	{
+		if (grd[1])
+			show_command_doc(grd[1]);
+		else
+		{
+			show_command_list();
+		}
+	}
+
+	else if (strcmp(grd[0], "exit") == 0 || strcmp(grd[0], "quit") == 0)
+	{
+		printf("\n\
+			\e[35mThanks for your use, good bye~\e[0m\n\n");
+		sleep(1);
+		exit(0);
+	}
+
+	else
+	{
+		printf("stu1459_mysh: command not found: %s\n", grd[0]);
+	}
+}
+
 void show_command_list()
 {
 	char *commondlist[] = {
@@ -219,7 +229,7 @@ void show_command_list()
 		"\e[33mexit/quit\e[0m                                      cause normal process termination",
 		"\e[33mman [command]\e[0m                                  show the manul of command",
 		"\e[33mclear\e[0m                                          clear the terminal screen",
-		"\e[33mabout\e[0m                                  	       show some information of stu1459_mysh",
+		"\e[33msh\e[0m                                  	       show some information of stu1459_mysh",
 		"\e[33mtime\e[0m                                  	       show current time\n"};
 
 	for (int i = 0; i < sizeof(commondlist) / sizeof(commondlist[i]); i++)
@@ -232,7 +242,6 @@ void show_command_doc()
 {
 
 	/** Manual for each command **/
-	char *about_doc = "\nabout - show some welcome message\n\n";
 	char *ls_doc = "\nls [FILE]... - list directory contents\n\n";
 	char *echo_doc = "\necho - display a line of text\n\n";
 	char *cat_doc = "\ncat [FILE]... - concatenate files and print on the standard output\n\n";
@@ -245,54 +254,59 @@ void show_command_doc()
 	char *man_doc = "\nman [command] - show the manul of command\n\n";
 	char *clear_doc = "\nclear - clear the terminal screen\n\n";
 	char *list_doc = "\nlist - show the command list\n\n";
+	char *time_doc = "\ntime - show current time\n\n";
 
-	if (match(grd[1], "ls") == 1)
+	if (strcmp(grd[1], "ls") == 0)
 	{
 		printf("%s", ls_doc);
 	}
-	else if (match(grd[1], "echo") == 1)
+	else if (strcmp(grd[1], "echo") == 0)
 	{
 		printf("%s", echo_doc);
 	}
-	else if (match(grd[1], "cat") == 1)
+	else if (strcmp(grd[1], "cat") == 0)
 	{
 		printf("%s", cat_doc);
 	}
-	else if (match(grd[1], "mkdir") == 1)
+	else if (strcmp(grd[1], "mkdir") == 0)
 	{
 		printf("%s", mkdir_doc);
 	}
-	else if (match(grd[1], "rm") == 1)
+	else if (strcmp(grd[1], "rm") == 0)
 	{
 		printf("%s", rm_doc);
 	}
-	else if (match(grd[1], "cd") == 1)
+	else if (strcmp(grd[1], "cd") == 0)
 	{
 		printf("%s", cd_doc);
 	}
-	else if (match(grd[1], "pwd") == 1)
+	else if (strcmp(grd[1], "pwd") == 0)
 	{
 		printf("%s", pwd_doc);
 	}
-	else if (match(grd[1], "wc") == 1)
+	else if (strcmp(grd[1], "wc") == 0)
 	{
 		printf("%s", wc_doc);
 	}
-	else if (match(grd[1], "exit") == 1 || match(grd[1], "quit") == 1)
+	else if (strcmp(grd[1], "exit") == 0 || strcmp(grd[1], "quit") == 0)
 	{
 		printf("%s", exit_doc);
 	}
-	else if (match(grd[1], "man") == 1)
+	else if (strcmp(grd[1], "man") == 0)
 	{
 		printf("%s", man_doc);
 	}
-	else if (match(grd[1], "clear") == 1)
+	else if (strcmp(grd[1], "clear") == 0)
 	{
 		printf("%s", clear_doc);
 	}
-	else if (match(grd[1], "list") == 1)
+	else if (strcmp(grd[1], "list") == 0)
 	{
 		printf("%s", list_doc);
+	}
+	else if (strcmp(grd[1], "time") == 0)
+	{
+		printf("%s", time_doc);
 	}
 	else
 	{
@@ -396,6 +410,7 @@ void lecho_redirect()
 	int fd;
 	pid_t pid;
 	char filename[MAX_LINE];
+
 	for (int i = 1; i < cmd_cnt; i++)
 	{
 		if (strcmp(grd[i], ">") == 0 || strcmp(grd[i], ">>") == 0)
@@ -414,7 +429,7 @@ void lecho_redirect()
 				if (fd < 0)
 				{
 					perror("stu1459_mysh: open");
-					return;
+					exit(1);
 				}
 				if ((pid = fork()) == 0)
 				{
@@ -423,8 +438,7 @@ void lecho_redirect()
 					{
 						printf("%s ", grd[j]); //The printed content actually went to the file (because it has been redirected)
 					}
-					//return;
-					continue;
+					exit(0);
 				}
 				else if (pid > 0)
 				{
@@ -433,7 +447,7 @@ void lecho_redirect()
 				else
 				{
 					perror("stu1459_mysh: fork");
-					return;
+					exit(1);
 				}
 				close(fd);
 			}
@@ -443,7 +457,7 @@ void lecho_redirect()
 				if (fd < 0)
 				{
 					perror("stu1459_mysh: open");
-					return;
+					exit(1);
 				}
 				if ((pid = fork()) == 0)
 				{
@@ -452,8 +466,7 @@ void lecho_redirect()
 					{
 						printf("%s ", grd[j]);
 					}
-					//return;
-					continue;
+					exit(0);
 				}
 				else if (pid > 0)
 				{
@@ -462,12 +475,10 @@ void lecho_redirect()
 				else
 				{
 					perror("stu1459_mysh: fork");
-					return;
+					exit(1);;
 				}
 				close(fd);
 			}
 		}
 	}
-
-	return;
 }

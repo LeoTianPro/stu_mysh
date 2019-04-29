@@ -67,7 +67,7 @@ void lrm()
     }
     else
     {
-        if ((match(grd[1], "-r") == 1) || (match(grd[1], "-R") == 1))
+        if ((strcmp(grd[1], "-r") == 0) || (strcmp(grd[1], "-R") == 0))
         {
             for (int i = 2; i < cmd_cnt; i++)
             {
