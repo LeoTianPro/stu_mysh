@@ -13,7 +13,7 @@ void lmkdir()
         for (int i = 1; i < cmd_cnt; i++)
         {
             strcpy(newdir, grd[i]);
-            if (mkdir(newdir, 0777) != 0)
+            if (mkdir(newdir, 0755) != 0)
             {
                 perror(newdir);
             }
