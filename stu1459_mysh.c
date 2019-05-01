@@ -1,10 +1,8 @@
 /***************************************************************************
 *Project Name: stu159_mysh
 *Description: a simple simulation of Linux shell implemented by C
-*Major:	Network Engineering
-*Auther：Boren Li
-*Student ID：2220161459
-*Last Modified： 2019.04.29
+*Auther：Titanlbr520
+*Last Modified： 2019.5.1
 *Github repository:	https://github.com/Titanlbr520/stu_mysh
 ***************************************************************************/
 
@@ -102,7 +100,7 @@ void show_prompt()
 void get_command()
 {
 	cmd_cnt = 0;
-	char str[MAX_LINE]; // Save your original input
+	char str[MAX_LINE]; // Save your original input按下ctrl + c
 	char *next = NULL;
 	memset(grd, 0, MAX_LINE);
 	fgets(str, 80, stdin);
@@ -219,7 +217,7 @@ void show_command_list()
 		"\n",
 		"COMMAND                                        FUNCTION\n",
 		"\e[33mls [FILE]...\e[0m                                   list directory contents",
-		"\e[33mecho\e[0m                                           display a line of text",
+		"\e[33mecho [STRING/$ENVIRON]...\e[0m                                           display a line of text or environment variable",
 		"\e[33mcat [FILE]...\e[0m                                  concatenate files and print on the standard output",
 		"\e[33mmkdir DIRECTORY...\e[0m                             make directories",
 		"\e[33mrm [-r/-R] [FILE]...\e[0m                           remove files or directories",
@@ -243,7 +241,7 @@ void show_command_doc()
 
 	/** Manual for each command **/
 	char *ls_doc = "\nls [FILE]... - list directory contents\n\n";
-	char *echo_doc = "\necho - display a line of text\n\n";
+	char *echo_doc = "\necho [STRING/$ENVIRON]... - display a line of text or environment variable\n\n";
 	char *cat_doc = "\ncat [FILE]... - concatenate files and print on the standard output\n\n";
 	char *mkdir_doc = "\nmkdir DIRECTORY... - make directories\n\n";
 	char *rm_doc = "\nrm [-r/-R] [FILE]... - remove files or directories\n\n";
@@ -253,7 +251,7 @@ void show_command_doc()
 	char *exit_doc = "\nexit/quit - cause normal process termination\n\n";
 	char *man_doc = "\nman [command] - show the manul of command\n\n";
 	char *clear_doc = "\nclear - clear the terminal screen\n\n";
-	char *list_doc = "\nlist - show the command list\n\n";
+	char *sh_doc = "\nsh - show some information of stu1459_mysh\n\n";
 	char *time_doc = "\ntime - show current time\n\n";
 
 	if (strcmp(grd[1], "ls") == 0)
@@ -300,9 +298,9 @@ void show_command_doc()
 	{
 		printf("%s", clear_doc);
 	}
-	else if (strcmp(grd[1], "list") == 0)
+	else if (strcmp(grd[1], "sh") == 0)
 	{
-		printf("%s", list_doc);
+		printf("%s", sh_doc);
 	}
 	else if (strcmp(grd[1], "time") == 0)
 	{
@@ -405,7 +403,7 @@ void ltime()
 	printf("%d\n", 1900 + tp->tm_year); //Must be added 1900, the returned value is not a complete year, less than the actual value of 1900
 }
 
-void lecho_redirect()
+void lecho_redirect() //TODO:fix redirect bug.
 {
 	int fd;
 	pid_t pid;
@@ -475,7 +473,7 @@ void lecho_redirect()
 				else
 				{
 					perror("stu1459_mysh: fork");
-					exit(1);;
+					exit(1);
 				}
 				close(fd);
 			}

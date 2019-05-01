@@ -1,6 +1,4 @@
-### 网络工程二班    李博仁  2220161459  
-
-# 实验二：  Shell实践
+# Shell实践
 
 #### 一、实验目的
 ***
@@ -44,9 +42,130 @@ Advanced shell 功能，例如:
 #### 四、实验结果
 ***
 
-##### 成功实现基本任务1，基本任务2，基本任务3，以及部分选做功能，详细如下：
+##### 完成基本任务1（部分超额完成任务），基本任务2，基本任务3，以及部分选做功能，详细如下：
 
-1.
+####基本任务1
+
+1.UI
+
+![](/lab2_image/ui.png)
+
+2.`ls [FILE]...`（支持绝对/相对路径的目录，且用不同颜色高亮不同的文件类型）
+
+![](/lab2_image/ls.png)
+
+3.`echo`（支持打印环境变量）
+
+![](/lab2_image/echo.png)
+
+4.`cat`（支持查看多个文件）
+
+![](/lab2_image/cat.png)
+
+5.`mkdir`(支持同时建立多个目录，初始权限为755)
+
+![](/lab2_image/mkdir1.png)
+![](/lab2_image/mkdir3.png)
+![](/lab2_image/mkdir2.png)
+
+6.`rm`（支持使用`-r`/`-R`选项递归删除多个目录及文件）
+
+![](/lab2_image/rm1.png)
+![](/lab2_image/rm2.png)![](/lab2_image/rm3.png)
+
+7.`cd`
+
+![](/lab2_image/cd_pwd.png)
+
+8.`pwd`
+
+![](/lab2_image/pwd.png)
+
+9.`wc`（支持统计多个文件并最后求和）
+
+![](/lab2_image/wc.png)
+
+***
+####选做任务
+
+1.`man [command]`（查看总体或单独的命令手册）
+
+![](/lab2_image/man1.png)
+![](/lab2_image/man2.png)
+
+2.`exit/quit`（退出stu1459_mysh并给予一定提示）
+
+![](/lab2_image/exit.png)
+
+3.`time`（查看当前时间）
+
+![](/lab2_image/time.png)
+
+6.`clear`（清屏）
+
+![](/lab2_image/clear1.png)
+![](/lab2_image/clear2.png)
+
+5.`echo [STRING] >/>> FILE`（支持`echo`的输入输出重定向到某个文件，包括覆盖和追加）
+
+![](/lab2_image/echo1.png)
+![](/lab2_image/echo2.png)
+![](/lab2_image/echo3.png)
+![](/lab2_image/echo4.png)
+
+***
+#### 五、编译、运行
+
+1.`make clean`（清除所有`.o`文件及可执行文件`stu1459_mysh`）
+
+![](/lab2_image/make_clean.png)
+
+2.`make`（编译所有.c文件并最终生成可执行文件`stu1459_mysh`）
+
+![](/lab2_image/make.png)
+
+3.`./stu1459_mysh`（运行当前目录的可执行文件`stu1459_mysh`）
+
+![](/lab2_image/run.png)
+
+***
+#### 六、实验分析
+
+&emsp;&emsp;通过本次实验，我熟悉了一些Linux下进行C编程所用到的一些API，体会到了与Windows下进行C编程的API上的一些异同点，了解了Shell一些命令的工作原理，并通过编程去实现，在此过程中，我了解了Linux的文件及目录的结构。除此之外，我还活用了操作系统中进程方面的知识，实现了`echo`的输入输出重定向。同时，通过编写`makefile`，我实现了对多个项目进行管理，了解了自动化编译技术。最后，为了让项目更加完整，让读者更加了解项目内容，我编写了此`README.md`文件。
+
+***
+#### 七、命令手册
 
 
-    
+#####1.显示目录内容：`ls [FILE]...`
+
+#####2.打印字符串/环境变量：`echo[STRING/$ENVIRON]...`
+
+#####3.显示文件内容：`cat [FILE]...`
+
+#####4.创建目录：`mkdir DIRECTORY...`
+
+#####5.删除目录/文件：`rm [-r/-R] [FILE]...`
+
+#####6.切换目录：`cd DIRECTORY`
+
+#####7.打印当前目录：`pwd`
+
+#####8.统计文件的行数、字数及字符数：`wc`
+
+#####9.退出Shell：`exit/quit`
+
+#####10.打印当前时间：`time`
+
+#####11.echo命令的输入输出重定向：`echo [STRING] >/>> FILE`
+
+#####12.打印关于信息：`sh`
+
+#####13.查看命令手册：`man [command]`
+
+***
+#### 八、参考资料
+
+1.《UNIX环境高级编程：第3版》（美） 史蒂文斯 (Stevens,W.R.)，（美）拉戈（Rago，S.A.）著； 戚正伟， 张亚英， 尤晋元译 
+2.《C Primer Plus： 第6版》 （美） 普拉达 （Prata S.） 著； 姜佑译
+3.《现代操作系统：第3版》 （荷） Andrew S. Tanenbaum 著 陈向群 马洪兵 等译

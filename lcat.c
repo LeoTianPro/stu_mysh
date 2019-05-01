@@ -6,7 +6,7 @@ void print_file(int fd)
 {
 	char buf;
 	while (read(fd, &buf, sizeof(char)) != 0)
-		printf("%c", buf);
+		printf("%c", buf);    
 	if (i != cmd_cnt - 1)
 		printf("\n\n");
 	else
