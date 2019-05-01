@@ -100,7 +100,7 @@ void show_prompt()
 void get_command()
 {
 	cmd_cnt = 0;
-	char str[MAX_LINE]; // Save your original input按下ctrl + c
+	char str[MAX_LINE]; // Save your original input
 	char *next = NULL;
 	memset(grd, 0, MAX_LINE);
 	fgets(str, 80, stdin);
@@ -119,7 +119,7 @@ void get_command()
 
 int is_command()
 {
-	if (NULL == grd[0]) //If there is no command (just enter)
+	if (NULL == grd[0]) //If there is no command (just press "enter")
 	{
 		return 0;
 	}
